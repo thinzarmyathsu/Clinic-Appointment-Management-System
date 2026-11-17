@@ -12,6 +12,9 @@ A full-stack clinic appointment application built as a group academic project fo
 ## Technologies
 Node.js, Express.js, EJS, MySQL (`mysql2`), HTML and CSS.
 
+## Live Website
+Explore the Clinic Appointment Management System : https://smartclinicappointments.onrender.com/This application was developed as an academic project using Node.js, Express.js, EJS and MySQL.
+
 ## Run locally (demonstration only)
 1. Install Node.js and MySQL.
 2. Create an empty MySQL database and import `database/schema.sql`.
