@@ -1,0 +1,202 @@
+<style>
+    /* Global Navbar Styling (Forces Homepage Design Everywhere) */
+    .app-navbar {
+        padding: 18px 40px !important;
+        background-color: #ffffff !important;
+        border-bottom: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.04) !important; 
+        z-index: 1100;
+    }
+    
+    .app-navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* 3-Column Layout to force perfect centering */
+    .app-navbar-left {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .app-navbar-center {
+        flex: 2;
+        display: flex;
+        justify-content: center;
+    }
+    .app-navbar-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Brand & Logo */
+    .app-navbar-brand {
+        font-weight: 700 !important;
+        font-size: 1.5rem !important;
+        color: #0b5ed7 !important; /* Blue text to match homepage screenshot */
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    .app-navbar-logo {
+        height: 45px !important; /* Caps the logo size */
+        width: auto !important;
+        margin-right: 15px !important;
+    }
+
+    /* Center Links */
+    .app-navbar-links {
+        display: flex;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .app-nav-link {
+        color: #111 !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        text-decoration: none;
+        padding: 8px 16px !important;
+        transition: color 0.3s;
+    }
+    .app-nav-link:hover, .app-nav-link.is-active {
+        color: #0b5ed7 !important;
+    }
+
+    /* Blue Profile Button */
+    .global-profile-btn {
+        background-color: #3ba2f6 !important; 
+        color: #ffffff !important;
+        border-radius: 50% !important;
+        width: 45px !important;
+        height: 45px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none !important;
+        font-size: 1.3rem !important;
+        padding: 0 !important;
+    }
+    .global-profile-btn::after {
+        display: none !important; /* Hides the small dropdown arrow */
+    }
+    
+    @media (max-width: 991px) {
+        .app-navbar-container {
+            flex-direction: column;
+        }
+        .app-navbar-left, .app-navbar-center, .app-navbar-right {
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .app-navbar-links {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+
+<%
+    /* 1. Safely determine the logged-in user */
+    const loggedInUser = (typeof user !== 'undefined' && user) 
+        || (typeof currentUser !== 'undefined' && currentUser)
+        || (typeof customer !== 'undefined' && customer)
+        || (typeof doctor !== 'undefined' && doctor)
+        || (typeof admin !== 'undefined' && admin)
+        || null;
+
+    const isLoggedIn = !!loggedInUser;
+    
+    /* 2. Define the booleans that the HTML relies on below */
+    const hasCustomer = loggedInUser && loggedInUser.role === 'patient';
+    const hasDoctor = loggedInUser && loggedInUser.role === 'doctor';
+    const hasAdmin = loggedInUser && (loggedInUser.role === 'admin' || typeof adminName !== 'undefined');
+
+    /* 3. Determine profile link based on role */
+    let profileHref = '/customerInformation';
+    if (hasDoctor) profileHref = '/doctor/profile';
+    if (hasAdmin) profileHref = '/admin/profile';
+%>
+
+<nav class="navbar navbar-expand-lg app-navbar sticky-top">
+    <div class="container-fluid">
+        
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#appNavbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse app-navbar-container" id="appNavbarMenu">
+            
+            <!-- LEFT: Brand & Logo -->
+            <div class="app-navbar-left">
+                <a class="navbar-brand app-navbar-brand" href="/">
+                    <img src="/images/smart clinic logo.png" alt="Clinic logo" class="app-navbar-logo">
+                    <span>Clinic Appointment System</span>
+                </a>
+            </div>
+
+            <!-- CENTER: Links -->
+            <div class="app-navbar-center">
+                <ul class="navbar-nav app-navbar-links">
+                    <li class="nav-item"><a class="nav-link app-nav-link" href="/about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link app-nav-link" href="/contact">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link app-nav-link" href="/reviews">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link app-nav-link" href="/location">Find Us</a></li>
+                </ul>
+            </div>
+
+            <!-- RIGHT: Profile Dropdown -->
+            <div class="app-navbar-right">
+                <div class="dropdown">
+                    <button class="btn global-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                        <% if (isLoggedIn) { %>
+                            <% if (hasCustomer) { %>
+                                <li><a class="dropdown-item" href="/Dashboard">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="<%= profileHref %>">Update Profile</a></li>                              
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            <% } %>
+                            <% if (hasDoctor) { %>
+                                <li><a class="dropdown-item" href="/doctordashboard">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="<%= profileHref %>">Update Profile</a></li>                              
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            <% } %>
+                            <% if (hasAdmin) { %>
+                                <li><a class="dropdown-item" href="/admindashboard">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="<%= profileHref %>">Update Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            <% } %>
+                        <% } else { %>
+                            <li><a class="dropdown-item" href="/login">Login</a></li>
+                            <li><a class="dropdown-item" href="/register">Get Started With Us</a></li>                          
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<script>
+    (function () {
+        var path = window.location.pathname;
+        var links = document.querySelectorAll('.app-nav-link');
+
+        links.forEach(function (link) {
+            var href = link.getAttribute('href');
+            if (href === path) {
+                link.classList.add('is-active');
+            }
+        });
+    })();
+</script>

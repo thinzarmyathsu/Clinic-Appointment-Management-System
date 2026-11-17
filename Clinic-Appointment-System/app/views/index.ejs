@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Appointment System</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons (For the profile and chevron icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        /* Internal CSS Styling */
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            padding: 20px 40px;
+            border-bottom: 2px solid #000; /* Crisp border matching wireframe */
+            background-color: #fff;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #000 !important;
+        }
+        .nav-link {
+            color: #000;
+            font-weight: 600;
+            margin: 0 15px;
+            font-size: 1rem;
+        }
+        .nav-link:hover {
+            color: #555;
+        }
+        .nav-icons i {
+            font-size: 1.5rem;
+            color: #000;
+            cursor: pointer;
+        }
+
+
+        body.homepage {
+            background: #F8FAFC;
+            color: #1F2937;
+        }
+        body.homepage::before {
+            display: none;
+        }
+        .homepage .navbar {
+            padding: 18px 40px;
+            position: relative;
+            z-index: 1100;
+        }
+        .homepage .navbar-nav {
+            gap: 10px;
+        }
+        .homepage .navbar-collapse {
+            justify-content: center !important;
+        }
+        .homepage .nav-links-group {
+            margin: 0 auto;
+        }
+        .homepage .nav-links-list {
+            margin: 0 auto;
+        }
+        .homepage .nav-link {
+            margin: 0 16px;
+        }
+        .homepage .home-profile-dropdown {
+            margin-left: 20px;
+        }
+        .homepage .home-profile-dropdown .dropdown-toggle::after {
+            display: none;
+        }
+        .homepage .home-profile-dropdown .dropdown-menu {
+            top: calc(100% + 10px);
+            right: 0;
+            left: auto;
+            z-index: 1200;
+        }
+        .hero-shell {
+            padding: 32px 24px 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .carousel-wrap {
+            max-width: 1440px;
+            margin: 0 auto;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 48px rgba(59, 130, 246, 0.14);
+            position: relative;
+            z-index: 1;
+        }
+        .carousel-item,
+        .carousel-item img {
+            height: 420px;
+        }
+        .carousel-item img {
+            width: 100%;
+            object-fit: cover;
+        }
+        .carousel-image-layer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(17, 24, 39, 0.5) 0%, rgba(17, 24, 39, 0.18) 58%, rgba(17, 24, 39, 0.1) 100%);
+        }
+        .carousel-caption {
+            left: 40px;
+            right: auto;
+            bottom: 34px;
+            top: auto;
+            transform: none;
+            width: auto;
+            padding: 0;
+            background: transparent;
+            box-shadow: none;
+            text-align: left;
+        }
+        .carousel-note {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.16);
+            color: #FFFFFF;
+            font-weight: 600;
+            backdrop-filter: blur(8px);
+        }
+        .carousel-indicators [data-bs-target] {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 6px;
+        }
+        .welcome-shell {
+            padding: 56px 24px 72px;
+        }
+        .welcome-box {
+            max-width: 860px;
+            margin: 0 auto 38px;
+            text-align: center;
+        }
+        .welcome-title {
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            font-weight: 800;
+            color: #1F2937;
+            margin-bottom: 16px;
+        }
+        .welcome-text {
+            font-size: 1.08rem;
+            line-height: 1.9;
+            color: #6B7280;
+            margin-bottom: 0;
+        }
+        .feature-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(59, 130, 246, 0.08);
+            border-radius: 28px;
+            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+            padding: 28px;
+            height: 100%;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 38px rgba(59, 130, 246, 0.12);
+        }
+        .feature-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(96, 165, 250, 0.18));
+            color: #3B82F6;
+            font-size: 1.5rem;
+            margin-bottom: 18px;
+        }
+        .feature-card h5 {
+            color: #1F2937;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .feature-card p {
+            color: #6B7280;
+            margin-bottom: 0;
+            line-height: 1.8;
+        }
+        .welcome-actions {
+            margin-top: 28px;
+        }
+        .welcome-actions .btn {
+            min-width: 190px;
+            padding: 14px 28px;
+        }
+        @media (max-width: 991.98px) {
+            .hero-shell,
+            .welcome-shell {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+            .homepage .navbar-collapse {
+                justify-content: end !important;
+            }
+            .homepage .nav-links-group {
+                margin: 0;
+            }
+            .homepage .nav-links-list {
+                margin: 0;
+            }
+            .carousel-item,
+            .carousel-item img {
+                height: 330px;
+            }
+            .carousel-caption {
+                left: 20px;
+                right: 20px;
+            }
+        }
+        @media (max-width: 575.98px) {
+            .carousel-item,
+            .carousel-item img {
+                height: 250px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/clinic-theme.css">
+</head>
+<body class="homepage">
+
+    <!-- NAVIGATION BAR -->
+    <%- include('partials/navbar') %>
+
+    <section class="hero-shell">
+        <div class="carousel-wrap">
+            <div id="clinicCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000" data-bs-wrap="true">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#clinicCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#clinicCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#clinicCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/images/clinic.jpeg" class="d-block w-100" alt="Modern clinic reception">
+                        <div class="carousel-image-layer"></div>
+                        <div class="carousel-caption">
+                            <div class="carousel-note"><i class="bi bi-hospital"></i> Modern clinic reception</div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/clinic2.jpg" class="d-block w-100" alt="Professional medical team">
+                        <div class="carousel-image-layer"></div>
+                        <div class="carousel-caption">
+                            <div class="carousel-note"><i class="bi bi-heart-pulse"></i> Professional medical team</div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/clinic3.jpg" class="d-block w-100" alt="Quality healthcare environment">
+                        <div class="carousel-image-layer"></div>
+                        <div class="carousel-caption">
+                            <div class="carousel-note"><i class="bi bi-stars"></i> Quality healthcare environment</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#clinicCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#clinicCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="welcome-shell">
+        <div class="container">
+            <div class="welcome-box">
+                <h2 class="welcome-title">Welcome to Smart Clinic System</h2>
+                <p class="welcome-text">Providing modern, convenient and trusted healthcare for every patient. Smart Clinic System helps individuals and families connect with professional care through a cleaner, simpler digital experience.</p>
+                <div class="welcome-actions d-flex flex-wrap justify-content-center gap-3">
+                    <a href="/customerAppointment" class="btn btn-primary btn-lg">Book Appointment</a>
+                    <a href="/login" class="btn btn-outline-primary btn-lg">Login</a>
+                    <a href="/register" class="btn btn-outline-primary btn-lg">Get Started With Us</a>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-calendar2-week"></i></div>
+                        <h5>Easy Appointment Booking</h5>
+                        <p>Schedule visits quickly with a simple booking flow built for busy patients and families.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-person-heart"></i></div>
+                        <h5>Experienced Doctors</h5>
+                        <p>Connect with trusted clinicians who can manage appointments, diagnoses, and follow-up care.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-file-earmark-medical"></i></div>
+                        <h5>Digital Medical Records</h5>
+                        <p>Keep consultation notes, symptoms, and prescriptions organised in one accessible system.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-chat-dots"></i></div>
+                        <h5>Friendly Patient Care</h5>
+                        <p>From first booking to diagnosis follow-up, every interaction is designed to feel supportive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>

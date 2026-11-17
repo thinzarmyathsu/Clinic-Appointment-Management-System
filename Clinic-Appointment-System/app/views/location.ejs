@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Us | Clinic Appointment System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: #ffffff; color: #111; }
+        /* Navbar styling remains exactly the same */
+        .navbar { padding: 20px 40px; border-bottom: 2px solid #000; background-color: #fff; }
+        .navbar-brand { font-weight: 700; font-size: 1.6rem; color: #000 !important; }
+        .nav-link { color: #000; font-weight: 600; margin: 0 15px; font-size: 1rem; }
+        .nav-link:hover { color: #555; }
+        .nav-icons i { font-size: 1.5rem; color: #000; cursor: pointer; }
+
+        .page-container { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
+        .map-container { border-radius: 30px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); height: 500px; margin-bottom: 40px; }
+        .location-card { background-color: #f8f9fa; border-radius: 20px; padding: 40px; height: 100%; }
+        .icon-accent { color: #D6CCC2; font-size: 2rem; margin-bottom: 15px; }
+    </style>
+    <link rel="stylesheet" href="/clinic-theme.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <%- include('partials/navbar') %>
+
+    <!-- LOCATE CONTENT -->
+    <div class="page-container">
+        <h2 class="fw-bold text-center mb-5" style="font-size: 2.5rem;">A Sanctuary in the City</h2>
+        
+        <!-- Google Maps Embed -->
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7906185876375!2d103.8299863!3d1.3004838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMQ!5e0!3m2!1sen!2ssg!4v1620000000000!5m2!1sen!2ssg" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="location-card text-center">
+                    <i class="bi bi-geo-alt-fill icon-accent"></i>
+                    <h5 class="fw-bold">The Address</h5>
+                    <p class="text-muted mt-3 mb-0">1 Orchard Boulevard<br>Camden Medical Centre, Suite #12-01<br>Singapore 248649</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="location-card text-center">
+                    <i class="bi bi-car-front-fill icon-accent"></i>
+                    <h5 class="fw-bold">Arrival & Valet</h5>
+                    <p class="text-muted mt-3 mb-0">Complimentary valet parking is available at the main drop-off point. Please present your appointment confirmation.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="location-card text-center">
+                    <i class="bi bi-door-closed-fill icon-accent"></i>
+                    <h5 class="fw-bold">Discreet Entry</h5>
+                    <p class="text-muted mt-3 mb-0">For patients requiring maximum privacy, a secure basement entrance and private lift access can be arranged.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

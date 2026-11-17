@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Diagnosis | Clinic Appointment System</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            padding: 20px 40px;
+            border-bottom: 2px solid #000;
+            background-color: #fff;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #000 !important;
+        }
+        .nav-link {
+            color: #000;
+            font-weight: 600;
+            margin: 0 15px;
+            font-size: 1rem;
+        }
+        .nav-link:hover {
+            color: #555;
+        }
+        .nav-icons i {
+            font-size: 1.5rem;
+            color: #000;
+            cursor: pointer;
+        }
+
+        /* Floating Card Styling */
+        .diagnosis-card {
+            background-color: #f8f9fa;
+            border-radius: 30px;
+            padding: 50px 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 700px;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .form-control, .form-select {
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .custom-label {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* Read-only appointment summary */
+        .summary-box {
+            background-color: #D6CCC2;
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 35px;
+        }
+        .summary-box p {
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .btn-orange {
+            background-color: #e65100;
+            color: #ffffff;
+            border-radius: 25px;
+            padding: 10px 40px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-orange:hover {
+            background-color: #cc4800;
+            color: #ffffff;
+        }
+    </style>
+    <link rel="stylesheet" href="/clinic-theme.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-4">
+        <h2 class="fw-bold mb-4 ms-lg-5 ps-lg-5">
+            <a href="/doctordashboard" class="text-dark" style="text-decoration:none;">&larr;</a>
+            Add Diagnosis
+        </h2>
+
+        <div class="diagnosis-card">
+
+            <!-- Read-only appointment summary -->
+            <%
+                let fee = 50; // Default specialist fee
+                if (appointment.consultation_type && appointment.consultation_type.toLowerCase().includes('general')) {
+                    fee = 20;
+                }
+            %>
+            <div class="summary-box">
+                <p>Patient: <%= appointment.patientName %></p>
+                <p>Date/Time: <%= new Date(appointment.appointment_date).toLocaleDateString('en-SG', { year: 'numeric', month: 'short', day: 'numeric' }) %> / <%= appointment.appointment_time %></p>
+                <p>Reason for Visit: <%= appointment.reason %></p>
+                <p>Consultation Type: <%= appointment.consultation_type %></p>
+                <p class="mb-0">Consultation Fee: $<%= fee %></p>
+            </div>
+
+            <form action="/adddiagnosis/<%= appointment.appointment_id %>" method="POST">
+
+                <div class="mb-4 row align-items-start">
+                    <label class="col-sm-4 col-form-label custom-label text-sm-end">Symptoms:</label>
+                    <div class="col-sm-8">
+                        <textarea name="symptoms" class="form-control" rows="2"><%= appointment.symptoms || '' %></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-4 row align-items-start">
+                    <label class="col-sm-4 col-form-label custom-label text-sm-end">Diagnosis:</label>
+                    <div class="col-sm-8">
+                        <textarea name="diagnosis" class="form-control" rows="2" required><%= appointment.diagnosis || '' %></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-4 row align-items-start">
+                    <label class="col-sm-4 col-form-label custom-label text-sm-end">Prescription:</label>
+                    <div class="col-sm-8">
+                        <textarea name="prescription" class="form-control" rows="2"><%= appointment.prescription || '' %></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-5 row align-items-start">
+                    <label class="col-sm-4 col-form-label custom-label text-sm-end">Doctor's Note:</label>
+                    <div class="col-sm-8">
+                        <textarea name="doctor_note" class="form-control" rows="2"><%= appointment.doctor_note || '' %></textarea>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-orange px-5 py-2">Save Diagnosis</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Details | Clinic Appointment System</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            padding: 20px 40px;
+            border-bottom: 2px solid #000;
+            background-color: #fff;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #000 !important;
+        }
+        .nav-link {
+            color: #000;
+            font-weight: 600;
+            margin: 0 15px;
+            font-size: 1rem;
+        }
+        .nav-link:hover {
+            color: #555;
+        }
+        .nav-icons i {
+            font-size: 1.5rem;
+            color: #000;
+            cursor: pointer;
+        }
+
+        /* Floating Card Styling */
+        .details-card {
+            background-color: #f8f9fa;
+            border-radius: 30px;
+            padding: 50px 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 700px;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .summary-box {
+            background-color: #D6CCC2;
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+        }
+        .summary-box p {
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .diagnosis-box p {
+            margin-bottom: 12px;
+        }
+        .diagnosis-label {
+            font-weight: 600;
+        }
+
+        .btn-orange {
+            background-color: #e65100;
+            color: #ffffff;
+            border-radius: 25px;
+            padding: 10px 40px;
+            font-weight: 600;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-orange:hover {
+            background-color: #cc4800;
+            color: #ffffff;
+        }
+    </style>
+    <link rel="stylesheet" href="/clinic-theme.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-4">
+        <h2 class="fw-bold mb-4 ms-lg-5 ps-lg-5">
+            <a href="<%= backUrl || '/doctordashboard' %>" class="text-dark" style="text-decoration:none;">&larr; <%= backLabel || 'Back to Dashboard' %></a>
+            Appointment Details
+        </h2>
+
+        <div class="details-card">
+
+            <div class="summary-box">
+                <p>Patient: <%= appointment.patientName %></p>
+                <p>Contact Number: <%= appointment.patientContact %></p>
+                <p>Email: <%= appointment.patientEmail %></p>
+                <p>Date/Time: <%= new Date(appointment.appointment_date).toLocaleDateString('en-SG', { year: 'numeric', month: 'short', day: 'numeric' }) %> / <%= appointment.appointment_time %></p>
+                <p>Reason for Visit: <%= appointment.reason %></p>
+                <p class="mb-0">Status: <%= appointment.status %></p>
+            </div>
+
+            <h5 class="fw-bold mb-3">Diagnosis</h5>
+
+            <% if (appointment.diagnosis) { %>
+                <div class="diagnosis-box">
+                    <p><span class="diagnosis-label">Symptoms:</span> <%= appointment.symptoms %></p>
+                    <p><span class="diagnosis-label">Diagnosis:</span> <%= appointment.diagnosis %></p>
+                    <p><span class="diagnosis-label">Prescription:</span> <%= appointment.prescription %></p>
+                    <p class="mb-0"><span class="diagnosis-label">Doctor's Note:</span> <%= appointment.doctor_note %></p>
+                </div>
+            <% } else { %>
+                <p class="text-muted">No diagnosis has been submitted for this appointment yet.</p>
+            <% } %>
+
+            <% if (showEditDiagnosis) { %>
+                <div class="text-center mt-4">
+                    <a href="/adddiagnosis/<%= appointment.appointment_id %>" class="btn btn-orange">
+                        <%= appointment.diagnosis ? 'Edit Diagnosis' : 'Add Diagnosis' %>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

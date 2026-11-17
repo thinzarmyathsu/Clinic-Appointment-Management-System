@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Appointments</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#f5f5f5;
+        }
+
+        /* Navbar */
+        .navbar-custom{
+            background:white;
+            border-bottom:1px solid #ccc;
+        }
+
+        .navbar-brand{
+            font-weight:500;
+            font-size:18px;
+        }
+
+        .nav-link{
+            color:black !important;
+            margin:0 10px;
+        }
+
+        /* Dashboard */
+        .dashboard-container{
+            background:#efefef;
+            border-radius:20px;
+            min-height:85vh;
+            padding:20px;
+            margin-top:10px;
+        }
+
+        .dashboard-title{
+            text-align:center;
+            font-weight:600;
+            margin-bottom:10px;
+        }
+
+        .welcome-text{
+            font-size:18px;
+            font-weight:600;
+        }
+
+        .search-input{
+            width:250px;
+            display:inline-block;
+        }
+
+        .role-btn{
+            background:#f45d01;
+            color:white;
+            border:none;
+            border-radius:25px;
+            padding:8px 25px;
+            margin-right:10px;
+            font-size:14px;
+            font-weight:500;
+            text-decoration:none;
+        }
+
+        .role-btn:hover{
+            background:#d94f00;
+            color:white;
+        }
+
+        .section-title{
+            text-align:center;
+            margin:30px 0;
+            font-weight:600;
+        }
+
+        .appointment-card{
+            background:#d4cdc8;
+            border-radius:25px;
+            padding:25px;
+            margin-bottom:25px;
+        }
+
+        .appointment-card p{
+            margin-bottom:8px;
+        }
+
+        .fee-text{
+            font-weight:600;
+            text-align:right;
+            margin-bottom:50px;
+        }
+
+        .btn-container{
+            display:flex;
+            justify-content:flex-end;
+            align-items:flex-end;
+            height:100%;
+        }
+
+        .view-btn{
+            background:#f45d01;
+            color:white;
+            border:none;
+            border-radius:20px;
+            padding:8px 35px;
+            font-weight:600;
+            text-decoration:none;
+        }
+
+        .view-btn:hover{
+            background:#d94f00;
+            color:white;
+        }
+
+        .info-card {
+            background:#ffffff;
+            border-radius:20px;
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .reset-input {
+            border-radius: 14px;
+            border: 1px solid #d3d3d3;
+            padding: 8px 12px;
+        }
+    </style>
+    <link rel="stylesheet" href="/clinic-theme.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<%- include('partials/navbar') %>
+
+<div class="container-fluid">
+
+    <div class="dashboard-container">
+
+        <% if (message && message.length > 0) { %>
+            <div class="alert alert-info rounded-4"><%= message[0] %></div>
+        <% } %>
+
+        <h2 class="dashboard-title">
+            admin dashboard
+        </h2>
+
+        <div class="row align-items-center mb-4">
+
+            <div class="col-md-6">
+                <h4 class="welcome-text">
+                    Welcome, <%= adminName %>
+                </h4>
+            </div>
+
+            <div class="col-md-6 text-end">
+
+                <label class="fw-semibold me-2">
+                    search name:
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control search-input"
+                    placeholder="Search Patient">
+
+            </div>
+
+        </div>
+
+        <!-- Toggle Buttons -->
+        <div class="mb-4">
+
+            <a href="/admin/patients" class="role-btn">
+                Patient
+            </a>
+
+            <a href="/admin/doctors" class="role-btn">
+                Doctor
+            </a>
+
+        </div>
+
+        <h2 class="section-title">
+            <a href="/admin/patients" class="role-btn text-decoration-none me-3">
+                &larr; Back to Patient Details
+            </a>
+            Viewing <%= patient.name %> Appointment
+        </h2>
+
+        <div class="info-card">
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-8">
+                    <p class="mb-1"><strong>Patient Name:</strong> <%= patient.name %></p>
+                    <p class="mb-1"><strong>Patient Email:</strong> <%= patient.email %></p>
+                    <p class="mb-1"><strong>Contact Number:</strong> <%= patient.contactNumber %></p>
+                    <p class="mb-0"><strong>Patient ID:</strong> <%= patient.id %></p>
+                </div>
+                <div class="col-lg-4">
+                    <form action="/admin/patient/reset-password/<%= patient.id %>" method="POST" class="d-flex gap-2">
+                        <input type="text" name="newPassword" class="form-control reset-input" placeholder="New password" required>
+                        <button type="submit" class="view-btn">Reset Password</button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-3">
+                <a href="/admin/patient/edit/<%= patient.id %>" class="view-btn me-2">Edit Patient</a>
+                <a href="/admin/patient/delete/<%= patient.id %>" class="view-btn" onclick="return confirm('Are you sure you want to delete this patient?');">Delete Patient</a>
+            </div>
+        </div>
+
+        <% appointments.forEach(appointment => { %>
+
+        <div class="appointment-card">
+
+            <div class="row">
+
+                <!-- Left Column -->
+                <div class="col-md-4">
+
+                    <p>
+                        Appointment ID:
+                        <strong><%= appointment.id %></strong>
+                    </p>
+
+                    <p>
+                        Date & Time :
+                        <%= appointment.date %> /
+                        <%= appointment.time %>
+                    </p>
+
+                    <p>
+                        Doctor's Name:
+                        <%= appointment.doctorName %>
+                    </p>
+
+                    <p>
+                        Appointment Status:
+                        <%= appointment.status %>
+                    </p>
+
+                </div>
+
+                <!-- Middle Column -->
+                <div class="col-md-4">
+
+                    <p>
+                        Reason for Visit:
+                        <%= appointment.reason %>
+                    </p>
+
+                    <p>
+                        Symptoms:
+                        <%= appointment.symptoms || '-' %>
+                    </p>
+
+                    <p>
+                        Diagnosis:
+                        <%= appointment.diagnosis || '-' %>
+                    </p>
+
+                    <p>
+                        Prescription / Medication:
+                        <%= appointment.medication || '-' %>
+                    </p>
+
+                    <p>
+                        Doctor's Note:
+                        <%= appointment.note || '-' %>
+                    </p>
+
+                    <p>
+                        Diagnosis Approval Status:
+                        <%= appointment.diagnosisApprovalStatus %>
+                    </p>
+
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-4 d-flex flex-column">
+
+                    <p class="fee-text">
+                        Consultation Fee:
+                        $<%= appointment.fee %>
+                    </p>
+
+                    <div class="btn-container">
+
+                        <a href="/admin/appointment/<%= appointment.id %>?backUrl=<%= encodeURIComponent('/admin/patient/' + patient.id) %>&backLabel=<%= encodeURIComponent('Back to Patient Details') %>"
+                           class="view-btn">
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <% }) %>
+
+    </div>
+
+</div>
+
+</body>
+</html>
